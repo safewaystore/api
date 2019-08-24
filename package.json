@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "apollo-server-express": "^2.9.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.10",
+    "typegoose": "^5.9.0",
+    "typescript": "^3.5.3"
+  }
+}
