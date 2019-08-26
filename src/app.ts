@@ -3,6 +3,7 @@ import * as database from '../config/database';
 import * as express from 'express';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import buildSchema from './app.module';
+import { Auth } from './commom/auth';
 
 const configureExpress = async () => {
   const app: express.Application = express();
@@ -16,6 +17,9 @@ const configureExpress = async () => {
       maxFiles: 10,
       maxFileSize: 1000000,
     },
+    context: ({ req }) => ({
+      auth: Auth.getUser(req),
+    }),
     formatError: err => ({
       message: err.message,
       code: err.extensions && err.extensions.code,
