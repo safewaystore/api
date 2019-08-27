@@ -17,8 +17,8 @@ const configureExpress = async () => {
       maxFiles: 10,
       maxFileSize: 1000000,
     },
-    context: ({ req }) => ({
-      auth: Auth.getUser(req),
+    context: async ({ req }) => ({
+      auth: await Auth.getUser(req),
     }),
     formatError: err => ({
       message: err.message,
