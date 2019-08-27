@@ -5,6 +5,8 @@ import { UserNotFound, UserIncorrect } from '../../commom/errors';
 import { JWT } from '../../commom/jwt';
 import { LoginUserInput } from './inputs/loginUser.input';
 import { CreateUserInput } from './inputs/createUser.input';
+import { YupValidate } from '../../commom/decorators/yupValidation';
+import { createUserSchema } from './user.validations';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -14,6 +16,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
+  @YupValidate(createUserSchema)
   public async createUser(
     @Arg('input', () => CreateUserInput) input: CreateUserInput
   ) {
