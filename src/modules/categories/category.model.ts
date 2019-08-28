@@ -12,8 +12,9 @@ export class Category extends Typegoose {
   @Field(() => ID)
   public id: string;
 
+  @Field(() => String)
   @Prop()
-  name: String;
+  title: String;
 
   @Field(() => String, { nullable: true })
   @Prop()
@@ -24,9 +25,10 @@ export class Category extends Typegoose {
   // public product: Ref<Product>;
 
   @Field(() => String, { nullable: true })
+  @Prop()
   image: string;
 
-  @Field(() => [Category], { nullable: true })
+  @Field(() => Category, { nullable: true })
   @Prop({ ref: { name: 'Category' } })
   public parentId: Ref<Category>;
 

@@ -5,16 +5,17 @@
 
 type Category {
   id: ID!
+  title: String!
   description: String
   image: String
-  parentId: [Category!]
+  parentId: Category
   children: [Category]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 input CreateCategoryInput {
-  name: String!
+  title: String!
   description: String
   image: String
   parentId: ID
@@ -45,6 +46,7 @@ type Mutation {
 
 type Query {
   users: [User!]!
+  allCategories: [Category!]!
 }
 
 type User {

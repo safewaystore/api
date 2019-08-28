@@ -3,7 +3,7 @@ import { InputType, Field, ID } from 'type-graphql';
 @InputType()
 export class CreateCategoryInput {
   @Field(() => String)
-  public name: string;
+  public title: string;
 
   @Field(() => String, { nullable: true })
   public description: string;
