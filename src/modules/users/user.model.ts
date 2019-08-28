@@ -1,9 +1,4 @@
-import {
-  prop as Prop,
-  pre as Pre,
-  Typegoose,
-  InstanceType,
-} from 'typegoose';
+import { prop as Prop, pre as Pre, Typegoose, InstanceType } from 'typegoose';
 import * as bcrypt from 'bcrypt';
 import { Field, ID, ObjectType } from 'type-graphql';
 
@@ -17,7 +12,6 @@ export interface IUser extends InstanceType<User> {}
   }
   next();
 })
-
 export class User extends Typegoose {
   @Field(() => ID)
   public id: string;
@@ -39,7 +33,7 @@ export class User extends Typegoose {
 
   @Field(() => String, { nullable: true })
   public token: string;
-  
+
   @Field(() => Date)
   public createdAt: Date;
 

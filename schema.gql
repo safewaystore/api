@@ -3,6 +3,23 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Category {
+  id: ID!
+  description: String
+  image: String
+  parentId: [Category!]
+  children: [Category]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateCategoryInput {
+  name: String!
+  description: String
+  image: String
+  parentId: ID
+}
+
 input CreateUserInput {
   firstName: String!
   lastName: String!
@@ -23,6 +40,7 @@ input LoginUserInput {
 type Mutation {
   createUser(input: CreateUserInput!): User!
   login(input: LoginUserInput!): User!
+  createCategory(input: CreateCategoryInput!): Category!
 }
 
 type Query {
