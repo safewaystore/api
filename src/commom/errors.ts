@@ -15,3 +15,9 @@ export class UserIncorrect extends Error {
     super('Usuário ou senha incorreta.');
   }
 }
+
+export class CategoryNotFound extends Error {
+  constructor() {
+    super('Categoria não encontrada.');
+  }
+}
