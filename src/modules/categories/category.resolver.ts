@@ -9,8 +9,8 @@ export class CategoryResolver {
   public async allCategories() {
     return categoryModel.find({});
   }
-  @Mutation(() => Category)
 
+  @Mutation(() => Category)
   public async createCategory(
     @Arg('input', () => CreateCategoryInput) input: CreateCategoryInput
   ) {
@@ -24,8 +24,23 @@ export class CategoryResolver {
         });
     }
 
-    const category = categoryModel.create(input);
-    return category;
+    return categoryModel
+      .create({
+        title: input.title,
+        description: input.description,
+        image: input.image,
+        parent: input.parentId,
+      })
+      .then(async category => {
+        if (category.parent) {
+          await categoryModel.findByIdAndUpdate(
+            { _id: category.parent },
+            { $push: { children: category } }
+          );
+        }
+
+        return category;
+      });
   }
 
   @Mutation(() => Boolean)

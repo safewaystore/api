@@ -30,7 +30,7 @@ export class Category extends Typegoose {
 
   @Field(() => Category, { nullable: true })
   @Prop({ ref: { name: 'Category' } })
-  public parentId: Ref<Category>;
+  public parent: Ref<Category>;
 
   @Field(() => Category, { nullable: 'itemsAndList' })
   @ArrayProp({ itemsRef: { name: 'Category' } })

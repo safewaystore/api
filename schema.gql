@@ -8,7 +8,7 @@ type Category {
   title: String!
   description: String
   image: String
-  parentId: Category
+  parent: Category
   children: [Category]
   createdAt: DateTime!
   updatedAt: DateTime!
