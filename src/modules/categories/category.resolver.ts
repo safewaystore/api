@@ -2,17 +2,15 @@ import { Resolver, Arg, Mutation, Query } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
 import { CategoryNotFound } from '../../commom/errors';
-import { dedentBlockStringValue } from 'graphql/language/blockString';
 
 @Resolver(() => Category)
 export class CategoryResolver {
   @Query(() => [Category])
   public async allCategories() {
-    console.log(categoryModel.find({}));
     return categoryModel.find({});
   }
-
   @Mutation(() => Category)
+
   public async createCategory(
     @Arg('input', () => CreateCategoryInput) input: CreateCategoryInput
   ) {
@@ -28,5 +26,14 @@ export class CategoryResolver {
 
     const category = categoryModel.create(input);
     return category;
+  }
+
+  @Mutation(() => Boolean)
+  public async removeCategory(@Arg('id', () => String) id: string) {
+    const category = await categoryModel.findOne({ _id: id });
+
+    if (!category) throw new CategoryNotFound();
+
+    return category.remove().then(res => res && true);
   }
 }
