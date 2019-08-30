@@ -48,6 +48,7 @@ type Mutation {
 type Query {
   users: [User!]!
   allCategories: [Category!]!
+  getCategory(id: String!): Category!
 }
 
 type User {

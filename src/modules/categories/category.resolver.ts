@@ -12,6 +12,11 @@ export class CategoryResolver {
     return categoryModel.find({});
   }
 
+  @Query(() => Category)
+  public async getCategory(@Arg('id', () => String) id: string) {
+    return categoryModel.findById(id);
+  }
+
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
