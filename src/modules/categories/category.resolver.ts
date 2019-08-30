@@ -20,7 +20,7 @@ import { UpdateCategoryInput } from './inputs/updateCategory.input';
 export class CategoryResolver {
   @Query(() => [Category])
   public async allCategories() {
-    return categoryModel.find({});
+    return categoryModel.find({ parent: null });
   }
 
   @Query(() => Category)
