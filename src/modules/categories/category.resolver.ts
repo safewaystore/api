@@ -2,6 +2,8 @@ import { Resolver, Arg, Mutation, Query } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
 import { CategoryNotFound } from '../../commom/errors';
+import { YupValidate } from '../../commom/decorators/yupValidation';
+import { createCategorySchema } from './category.validations';
 
 @Resolver(() => Category)
 export class CategoryResolver {
@@ -10,6 +12,7 @@ export class CategoryResolver {
     return categoryModel.find({});
   }
 
+  @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
     @Arg('input', () => CreateCategoryInput) input: CreateCategoryInput
