@@ -3,7 +3,8 @@ import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
 import { CategoryNotFound } from '../../commom/errors';
 import { YupValidate } from '../../commom/decorators/yupValidation';
-import { createCategorySchema } from './category.validations';
+import { createCategorySchema, updateCategorySchema } from './category.validations';
+import { UpdateCategoryInput } from './inputs/updateCategory.input';
 
 @Resolver(() => Category)
 export class CategoryResolver {
@@ -49,6 +50,28 @@ export class CategoryResolver {
 
         return category;
       });
+  }
+
+  @Mutation(() => Category)
+  @YupValidate(updateCategorySchema)
+  public async updateCategory(
+    @Arg('input', () => UpdateCategoryInput) input: UpdateCategoryInput,
+  ) {
+    const category = await categoryModel.findOne({ _id: input.id });
+
+    if (!category) throw new CategoryNotFound();
+
+    return categoryModel.findByIdAndUpdate(
+      input.id,
+      {
+        title: input.title,
+        description: input.description,
+        image: input.image,
+      },
+      {
+        new: true,
+      }
+    );
   }
 
   @Mutation(() => Boolean)

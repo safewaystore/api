@@ -4,3 +4,8 @@ export const createCategorySchema = () =>
   yup.object().shape({
     title: yup.string().required(),
   });
+
+export const updateCategorySchema = () => 
+  yup.object().shape({
+    title: yup.string().required(),
+  });

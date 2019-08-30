@@ -42,6 +42,7 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   login(input: LoginUserInput!): User!
   createCategory(input: CreateCategoryInput!): Category!
+  updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Boolean!
 }
 
@@ -49,6 +50,14 @@ type Query {
   users: [User!]!
   allCategories: [Category!]!
   getCategory(id: String!): Category!
+}
+
+input UpdateCategoryInput {
+  id: ID!
+  title: String!
+  description: String
+  image: String
+  parentId: ID
 }
 
 type User {
