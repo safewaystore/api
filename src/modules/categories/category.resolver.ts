@@ -1,4 +1,4 @@
-import { Resolver, Arg, Mutation, Query } from 'type-graphql';
+import { Resolver, Arg, Mutation, Query, FieldResolver, Root } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
 import { CategoryNotFound } from '../../commom/errors';
@@ -18,6 +18,16 @@ export class CategoryResolver {
     return categoryModel.findById(id);
   }
 
+  // @FieldResolver(() => Category)
+  // public async parent(@Root('_doc') category: Category) {
+  //   return categoryModel.findById(category.parent);
+  // }
+
+  // @FieldResolver(() => [Category])
+  // public async children(@Root('_doc') category: Category) {
+  //   return categoryModel.find({ parent: category._id });
+  // }
+  
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
