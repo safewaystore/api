@@ -9,16 +9,18 @@ import { User } from '../users/user.model';
 
 @ObjectType()
 export class Category extends Typegoose {
-  @Field(() => ID)
-  public id: string;
+  public readonly _id: string;
+
+  @Field(() => ID, { nullable: true })
+  public readonly id: string;
 
   @Field(() => String)
   @Prop()
-  title: String;
+  public title: String;
 
   @Field(() => String, { nullable: true })
   @Prop()
-  description: string;
+  public description: string;
 
   // @Field(type => Product, { nullable: true })
   // @Prop({ ref: { name: 'Product' } })
@@ -26,7 +28,7 @@ export class Category extends Typegoose {
 
   @Field(() => String, { nullable: true })
   @Prop()
-  image: string;
+  public image: string;
 
   @Field(() => Category, { nullable: true })
   @Prop({ ref: { name: 'Category' } })

@@ -1,9 +1,19 @@
-import { Resolver, Arg, Mutation, Query, FieldResolver, Root } from 'type-graphql';
+import {
+  Resolver,
+  Arg,
+  Mutation,
+  Query,
+  FieldResolver,
+  Root,
+} from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
 import { CategoryNotFound } from '../../commom/errors';
 import { YupValidate } from '../../commom/decorators/yupValidation';
-import { createCategorySchema, updateCategorySchema } from './category.validations';
+import {
+  createCategorySchema,
+  updateCategorySchema,
+} from './category.validations';
 import { UpdateCategoryInput } from './inputs/updateCategory.input';
 
 @Resolver(() => Category)
@@ -18,16 +28,16 @@ export class CategoryResolver {
     return categoryModel.findById(id);
   }
 
-  // @FieldResolver(() => Category)
-  // public async parent(@Root('_doc') category: Category) {
-  //   return categoryModel.findById(category.parent);
-  // }
+  @FieldResolver(() => Category)
+  public async parent(@Root('_doc') category: Category) {
+    return categoryModel.findById(category.parent);
+  }
 
-  // @FieldResolver(() => [Category])
-  // public async children(@Root('_doc') category: Category) {
-  //   return categoryModel.find({ parent: category._id });
-  // }
-  
+  @FieldResolver(() => [Category])
+  public async children(@Root('_doc') category: Category) {
+    return categoryModel.find({ parent: category._id });
+  }
+
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
@@ -65,7 +75,7 @@ export class CategoryResolver {
   @Mutation(() => Category)
   @YupValidate(updateCategorySchema)
   public async updateCategory(
-    @Arg('input', () => UpdateCategoryInput) input: UpdateCategoryInput,
+    @Arg('input', () => UpdateCategoryInput) input: UpdateCategoryInput
   ) {
     const category = await categoryModel.findOne({ _id: input.id });
 
