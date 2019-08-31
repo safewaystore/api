@@ -5,6 +5,8 @@ import {
   Query,
   FieldResolver,
   Root,
+  Ctx,
+  Authorized,
 } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
@@ -15,6 +17,7 @@ import {
   updateCategorySchema,
 } from './category.validations';
 import { UpdateCategoryInput } from './inputs/updateCategory.input';
+import { IUser } from '../users/user.model';
 
 @Resolver(() => Category)
 export class CategoryResolver {
@@ -38,6 +41,7 @@ export class CategoryResolver {
     return categoryModel.find({ parent: category._id });
   }
 
+  @Authorized('admin')
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
@@ -72,6 +76,7 @@ export class CategoryResolver {
       });
   }
 
+  @Authorized('admin')
   @Mutation(() => Category)
   @YupValidate(updateCategorySchema)
   public async updateCategory(
@@ -94,6 +99,7 @@ export class CategoryResolver {
     );
   }
 
+  @Authorized('admin')
   @Mutation(() => Boolean)
   public async removeCategory(@Arg('id', () => String) id: string) {
     const category = await categoryModel.findOne({ _id: id });

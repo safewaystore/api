@@ -1,4 +1,10 @@
-import { prop as Prop, pre as Pre, Typegoose, InstanceType } from 'typegoose';
+import {
+  prop as Prop,
+  pre as Pre,
+  Typegoose,
+  InstanceType,
+  instanceMethod,
+} from 'typegoose';
 import * as bcrypt from 'bcrypt';
 import { Field, ID, ObjectType } from 'type-graphql';
 
@@ -15,6 +21,10 @@ export interface IUser extends InstanceType<User> {}
 export class User extends Typegoose {
   @Field(() => ID)
   public id: string;
+
+  @Field(() => String)
+  @Prop({ default: 'client' })
+  public role: string;
 
   @Prop()
   @Field(() => String)
@@ -39,6 +49,11 @@ export class User extends Typegoose {
 
   @Field(() => Date)
   public updatedAt: Date;
+
+  @instanceMethod
+  public isAdmin(this: InstanceType<User>) {
+    return this.role === 'admin';
+  }
 }
 
 export const userModel = new User().getModelForClass(User, {
