@@ -1,9 +1,9 @@
-import { Field, ID, InputType } from "type-graphql";
+import { Field, ID, InputType } from 'type-graphql';
 
 @InputType()
 export class UpdateCategoryInput {
   @Field(() => ID)
-  public id: String
+  public id: String;
 
   @Field(() => String)
   public title: string;
@@ -13,6 +13,9 @@ export class UpdateCategoryInput {
 
   @Field(() => String, { nullable: true })
   public image: string;
+
+  @Field(() => String)
+  public slug: string;
 
   @Field(() => ID, { nullable: true })
   public parentId: string;

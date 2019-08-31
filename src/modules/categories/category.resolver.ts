@@ -62,6 +62,7 @@ export class CategoryResolver {
         title: input.title,
         description: input.description,
         image: input.image,
+        slug: input.slug,
         parent: input.parentId,
       })
       .then(async category => {
@@ -92,6 +93,7 @@ export class CategoryResolver {
         title: input.title,
         description: input.description,
         image: input.image,
+        slug: input.slug,
       },
       {
         new: true,

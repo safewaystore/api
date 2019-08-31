@@ -11,6 +11,9 @@ export class CreateCategoryInput {
   @Field(() => String, { nullable: true })
   public image: string;
 
+  @Field(() => String)
+  public slug: string;
+
   @Field(() => ID, { nullable: true })
   public parentId: string;
 }

@@ -30,6 +30,10 @@ export class Category extends Typegoose {
   @Prop()
   public image: string;
 
+  @Field(() => String)
+  @Prop()
+  public slug: string;
+
   @Field(() => Category, { nullable: true })
   @Prop({ ref: { name: 'Category' } })
   public parent: Ref<Category>;

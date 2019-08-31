@@ -8,6 +8,7 @@ type Category {
   title: String!
   description: String
   image: String
+  slug: String!
   parent: Category
   children: [Category]
   createdAt: DateTime!
@@ -18,6 +19,7 @@ input CreateCategoryInput {
   title: String!
   description: String
   image: String
+  slug: String!
   parentId: ID
 }
 
@@ -58,6 +60,7 @@ input UpdateCategoryInput {
   title: String!
   description: String
   image: String
+  slug: String!
   parentId: ID
 }
 
