@@ -13,4 +13,7 @@ export class CreateUserInput {
 
   @Field(() => String)
   public password: string;
+
+  @Field(() => String)
+  public role: string;
 }
