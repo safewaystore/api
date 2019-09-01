@@ -5,7 +5,8 @@ import {
   arrayProp as ArrayProp,
 } from 'typegoose';
 import { Field, ObjectType, ID } from 'type-graphql';
-import { User } from '../users/user.model';
+import { ImageSchema } from './interfaces/image';
+import { Image } from '../../commom/interfaces/image';
 
 @ObjectType()
 export class Category extends Typegoose {
@@ -26,9 +27,9 @@ export class Category extends Typegoose {
   // @Prop({ ref: { name: 'Product' } })
   // public product: Ref<Product>;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Image, { nullable: true })
   @Prop()
-  public image: string;
+  public image: ImageSchema;
 
   @Field(() => String)
   @Prop()

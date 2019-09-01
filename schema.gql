@@ -7,7 +7,7 @@ type Category {
   id: ID
   title: String!
   description: String
-  image: String
+  image: Image
   slug: String!
   parent: Category
   children: [Category]
@@ -35,6 +35,12 @@ input CreateUserInput {
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
+
+type Image {
+  id: ID
+  original: String!
+  variants: Variant
+}
 
 input LoginUserInput {
   email: String!
@@ -73,4 +79,9 @@ type User {
   token: String
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type Variant {
+  name: String
+  path: String
 }

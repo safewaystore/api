@@ -21,11 +21,13 @@ import { IUser } from '../users/user.model';
 
 @Resolver(() => Category)
 export class CategoryResolver {
+  @Authorized('admin')
   @Query(() => [Category])
   public async allCategories() {
     return categoryModel.find({ parent: null });
   }
 
+  @Authorized('admin')
   @Query(() => Category)
   public async getCategory(@Arg('id', () => String) id: string) {
     return categoryModel.findById(id);
@@ -110,4 +112,6 @@ export class CategoryResolver {
 
     return category.remove().then(res => res && true);
   }
+
+  // public addCategoryImage(@Arg('input', () => AddEventImageInput) input: AddEvent){}
 }

@@ -30,17 +30,19 @@ export class UserResolver {
   public async login(
     @Arg('input', () => LoginUserInput) input: LoginUserInput
   ) {
-    return userModel.findOne({ email: input.email }).then(async user => {
-      if (!user) throw new UserNotFound();
+    return userModel
+      .findOne({ email: input.email, role: 'admin' })
+      .then(async user => {
+        if (!user) throw new UserNotFound();
 
-      return bcrypt.compare(input.password, user.password).then(res => {
-        if (res) {
-          user.token = JWT.createToken(user.toObject());
+        return bcrypt.compare(input.password, user.password).then(res => {
+          if (res) {
+            user.token = JWT.createToken(user.toObject());
 
-          return user;
-        }
-        throw new UserIncorrect();
+            return user;
+          }
+          throw new UserIncorrect();
+        });
       });
-    });
   }
 }
