@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import setupApp from './src/app';
 
-const port = 4000;
+let port = 4000;
+if (process.env.ENV === 'production') {
+  port = 80;
+}
 
 setupApp()
   .then(app =>
