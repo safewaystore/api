@@ -9,6 +9,6 @@ export class Image {
   @Field()
   public original: string;
 
-  @Field(() => Variant, { nullable:true })
+  @Field(() => Variant, { nullable: true })
   public variants: Variant;
 }

@@ -3,10 +3,10 @@ import { GraphQLUpload } from 'graphql-upload';
 import { Stream } from 'stream';
 
 @InputType()
-export class AddEventImageInput {
+export class AddCategoryImageInput {
   @Field(() => ID)
   public categoryId: string;
-
+  
   @Field(() => GraphQLUpload)
   public image: Stream;
 }

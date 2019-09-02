@@ -18,9 +18,15 @@ import {
 } from './category.validations';
 import { UpdateCategoryInput } from './inputs/updateCategory.input';
 import { IUser } from '../users/user.model';
+import { Image } from '../../commom/interfaces/image';
+import { AddCategoryImageInput } from './inputs/addCategoryImageInput';
+import { FileS3 } from '../../commom/aws';
+import { CategoryConst } from './category.consts';
 
 @Resolver(() => Category)
 export class CategoryResolver {
+  constructor(private readonly consts = CategoryConst) {}
+
   @Authorized('admin')
   @Query(() => [Category])
   public async allCategories() {
@@ -113,5 +119,34 @@ export class CategoryResolver {
     return category.remove().then(res => res && true);
   }
 
-  // public addCategoryImage(@Arg('input', () => AddEventImageInput) input: AddEvent){}
+  @Mutation(() => Image)
+  public async addCategoryImage(
+    @Arg('input', () => AddCategoryImageInput) input: AddCategoryImageInput
+  ) {
+    const category = await categoryModel.findOne({
+      _id: 'input.categoryId',
+    });
+
+    console.log(category);
+
+    if (!category) throw new CategoryNotFound();
+
+    const uploadedImage = await FileS3.upload(input.image, {
+      path: 'category',
+      id: category.id,
+      variants: this.consts.variants.images,
+    });
+
+    return categoryModel
+      .findByIdAndUpdate(
+        category.id,
+        {
+          $push: { image: { path: uploadedImage } },
+        },
+        { new: true }
+      )
+      .then(categoryUpdated => {
+        console.log('Ok!');
+      });
+  }
 }

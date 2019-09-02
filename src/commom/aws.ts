@@ -16,7 +16,7 @@ interface IVariant {
 }
 
 export class FileS3 {
-  public static url(filePath: string, variant?: string) {
+  public static async url(filePath: string, variant?: string) {
     const params = {
       Bucket: 'safeway-store',
       Key: filePath,
@@ -44,7 +44,7 @@ export class FileS3 {
     image: any,
     options: { path: string; id: string; variants?: IVariant[] }
   ) {
-    const { filename, mimetype, createReadStream } = await image;
+    const { filename, mimetype, createReadStream } = image;
     const stream = createReadStream();
     const envFolder = 'dev';
     const uuid = Math.random()
