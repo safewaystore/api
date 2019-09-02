@@ -44,7 +44,7 @@ export class FileS3 {
     image: any,
     options: { path: string; id: string; variants?: IVariant[] }
   ) {
-    const { filename, mimetype, createReadStream } = image;
+    const { filename, mimetype, createReadStream } = await image;
     const stream = createReadStream();
     const envFolder = 'dev';
     const uuid = Math.random()

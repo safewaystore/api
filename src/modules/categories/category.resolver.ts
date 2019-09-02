@@ -124,10 +124,8 @@ export class CategoryResolver {
     @Arg('input', () => AddCategoryImageInput) input: AddCategoryImageInput
   ) {
     const category = await categoryModel.findOne({
-      _id: 'input.categoryId',
+      _id: input.categoryId,
     });
-
-    console.log(category);
 
     if (!category) throw new CategoryNotFound();
 
@@ -141,7 +139,7 @@ export class CategoryResolver {
       .findByIdAndUpdate(
         category.id,
         {
-          $push: { image: { path: uploadedImage } },
+          'image.path': uploadedImage,
         },
         { new: true }
       )

@@ -8,6 +8,8 @@ import { Auth } from './commom/auth';
 const configureExpress = async () => {
   const app: express.Application = express();
 
+  app.use(express.static('./', { dotfiles: 'allow' }));
+
   const { typeDefs, resolvers } = await buildSchema;
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
