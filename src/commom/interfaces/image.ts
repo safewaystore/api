@@ -11,22 +11,6 @@ export class Image {
   @Prop()
   public path: string;
 
-  @Field(() => String, { nullable: true })
-  public original: string;
-
   @Field(() => Variant, { nullable: true })
   public variants: Variant;
 }
-
-// interface IVariants {
-//   height: string;
-//   key: 'thumb' | 'medium' | 'large';
-//   path: string;
-//   width: string;
-// }
-
-// export interface IImage {
-//   id: string;
-//   path: string;
-//   variants: IVariants[];
-// }

@@ -46,7 +46,12 @@ export class FileS3 {
   ) {
     const { filename, mimetype, createReadStream } = await image;
     const stream = createReadStream();
-    const envFolder = 'dev';
+
+    let envFolder = 'dev';
+    if (process.env.ENV === 'production') {
+      envFolder = 'prod';
+    }
+
     const uuid = Math.random()
       .toString(36)
       .substring(2);

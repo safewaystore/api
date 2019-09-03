@@ -44,7 +44,6 @@ scalar DateTime
 type Image {
   id: ID
   path: String!
-  original: String
   variants: Variant
 }
 
@@ -72,7 +71,7 @@ input UpdateCategoryInput {
   id: ID!
   title: String!
   description: String
-  image: String
+  image: Upload
   slug: String!
   parentId: ID
 }
@@ -93,5 +92,7 @@ type User {
 
 type Variant {
   name: String
+  width: String!
+  height: String!
   path: String
 }

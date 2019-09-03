@@ -105,7 +105,7 @@ export class CategoryResolver {
       });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @Mutation(() => Category)
   @YupValidate(updateCategorySchema)
   public async updateCategory(
@@ -115,13 +115,40 @@ export class CategoryResolver {
 
     if (!category) throw new CategoryNotFound();
 
+    if (input.image) {
+      const imagePath = category.image.path;
+
+      return FileS3.remove(imagePath, this.consts.variants.images).then(
+        async () => {
+          const uploadedImage = await FileS3.upload(input.image, {
+            path: 'category',
+            id: category.id,
+            variants: this.consts.variants.images,
+          });
+
+          return categoryModel.findByIdAndUpdate(
+            category.id,
+            {
+              title: input.title,
+              description: input.description,
+              slug: input.slug,
+              'image.path': uploadedImage,
+            },
+            {
+              new: true,
+            }
+          );
+        }
+      );
+    }
+
     return categoryModel.findByIdAndUpdate(
-      input.id,
+      category.id,
       {
         title: input.title,
         description: input.description,
-        image: input.image,
         slug: input.slug,
+        'image.path': input.image,
       },
       {
         new: true,
