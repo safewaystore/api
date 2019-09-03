@@ -7,7 +7,7 @@ export class Image {
   @Field(() => ID, { nullable: true })
   public id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
   public path: string;
 

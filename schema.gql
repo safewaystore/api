@@ -43,7 +43,7 @@ scalar DateTime
 
 type Image {
   id: ID
-  path: String!
+  path: String
   variants: Variant
 }
 
