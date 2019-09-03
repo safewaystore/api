@@ -78,7 +78,7 @@ export class FileS3 {
               .toBuffer();
 
             const variantOption = {
-              Bucket: 'partiu-pedal',
+              Bucket: 'safeway-store',
               Body: resizedImage,
               Key: `${envFolder}/${options.path}/${options.id}/${variant.name}/${uuid}_${filename}`,
               ContentType: mimetype,
