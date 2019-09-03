@@ -92,7 +92,7 @@ type User {
 
 type Variant {
   name: String
-  width: String!
-  height: String!
+  width: String
+  height: String
   path: String
 }
