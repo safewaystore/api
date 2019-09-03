@@ -39,6 +39,22 @@ export class CategoryResolver {
     return categoryModel.findById(id);
   }
 
+  @FieldResolver(() => Image)
+  public async image(@Root('_doc') category: Category) {
+    return (
+      category.image.path && {
+        path: await FileS3.url(category.image.path),
+
+        variants: this.consts.variants.images.map(categoryVariant => ({
+          name: categoryVariant.name,
+          path: FileS3.url(category.image.path, categoryVariant.name),
+          width: categoryVariant.width,
+          height: categoryVariant.height,
+        })),
+      }
+    );
+  }
+
   @FieldResolver(() => Category)
   public async parent(@Root('_doc') category: Category) {
     return categoryModel.findById(category.parent);

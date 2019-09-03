@@ -11,6 +11,6 @@ export class Image {
   @Prop()
   public path: string;
 
-  @Field(() => Variant, { nullable: true })
-  public variants: Variant;
+  @Field(() => [Variant], { nullable: true })
+  public variants: Variant[];
 }

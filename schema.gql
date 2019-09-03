@@ -44,7 +44,7 @@ scalar DateTime
 type Image {
   id: ID
   path: String
-  variants: Variant
+  variants: [Variant!]
 }
 
 input LoginUserInput {
