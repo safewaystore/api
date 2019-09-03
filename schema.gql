@@ -23,7 +23,7 @@ type Category {
 input CreateCategoryInput {
   title: String!
   description: String
-  image: String
+  image: Upload
   slug: String!
   parentId: ID
 }
@@ -43,7 +43,7 @@ scalar DateTime
 
 type Image {
   id: ID
-  original: String!
+  original: String
   variants: Variant
 }
 

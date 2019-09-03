@@ -23,10 +23,6 @@ export class Category extends Typegoose {
   @Prop()
   public description: string;
 
-  // @Field(type => Product, { nullable: true })
-  // @Prop({ ref: { name: 'Product' } })
-  // public product: Ref<Product>;
-
   @Field(() => Image, { nullable: true })
   @Prop()
   public image: ImageSchema;

@@ -49,7 +49,7 @@ export class CategoryResolver {
     return categoryModel.find({ parent: category._id });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
@@ -69,7 +69,6 @@ export class CategoryResolver {
       .create({
         title: input.title,
         description: input.description,
-        image: input.image,
         slug: input.slug,
         parent: input.parentId,
       })
@@ -79,6 +78,27 @@ export class CategoryResolver {
             { _id: category.parent },
             { $push: { children: category } }
           );
+        }
+
+        if (input.image) {
+          const uploadedImage = await FileS3.upload(input.image, {
+            path: 'category',
+            id: category.id,
+            variants: this.consts.variants.images,
+          });
+
+          return categoryModel
+            .findByIdAndUpdate(
+              category.id,
+              {
+                'image.path': uploadedImage,
+              },
+              { new: true }
+            )
+            .then(categoryUpdated => {
+              if (!categoryUpdated) throw new CategoryNotFound();
+              return categoryUpdated;
+            });
         }
 
         return category;

@@ -6,7 +6,7 @@ import { Stream } from 'stream';
 export class AddCategoryImageInput {
   @Field(() => ID)
   public categoryId: string;
-  
+
   @Field(() => GraphQLUpload)
   public image: Stream;
 }

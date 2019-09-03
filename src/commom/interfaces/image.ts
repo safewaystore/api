@@ -6,7 +6,7 @@ export class Image {
   @Field(() => ID, { nullable: true })
   public id: string;
 
-  @Field()
+  @Field(() => String, { nullable: true })
   public original: string;
 
   @Field(() => Variant, { nullable: true })

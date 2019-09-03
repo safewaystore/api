@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-
 import * as database from '../config/database';
 import * as express from 'express';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
