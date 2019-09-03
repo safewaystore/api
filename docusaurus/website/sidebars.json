@@ -1,0 +1,14 @@
+{
+  "docs": {
+    "Getting Started": ["getting-started-installation"],
+    "Products": ["products-all"],
+    "Categories": [
+      "categories-all",
+      "categories-get",
+      "categories-new",
+      "categories-update",
+      "categories-remove"
+    ],
+    "Deploying": ["deploy-aws", "deploy-digital-ocean"]
+  }
+}
