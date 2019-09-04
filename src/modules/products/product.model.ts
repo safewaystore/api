@@ -2,6 +2,7 @@ import { Typegoose, prop as Prop, Ref, arrayProp } from 'typegoose';
 import { ID, Field, ObjectType } from 'type-graphql';
 import { Image } from '../../commom/interfaces/image';
 import { Category } from '../categories/category.model';
+import { ProductVariant } from './types/productVariant.type';
 
 @ObjectType()
 export class Product extends Typegoose {
@@ -36,6 +37,10 @@ export class Product extends Typegoose {
   @Field(() => [Category], { nullable: 'itemsAndList' })
   @arrayProp({ itemsRef: { name: 'Category' } })
   public categories: Array<Ref<Category>>;
+
+  // @arrayProp({ items: ProductVariant })
+  // @Field(() => [ProductVariant], { nullable: 'itemsAndList' })
+  // public variants: ProductVariant[];
 }
 
 export const productModel = new Product().getModelForClass(Product, {
