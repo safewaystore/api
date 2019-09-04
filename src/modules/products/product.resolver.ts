@@ -1,7 +1,6 @@
 import { Arg } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel } from './product.model';
-import { Category } from '../categories/category.model';
 
 export class ProductResolver {
   public async createProduct(
