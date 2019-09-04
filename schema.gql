@@ -16,6 +16,7 @@ type Category {
   slug: String!
   parent: Category
   children: [Category]
+  product: Product
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -59,6 +60,17 @@ type Mutation {
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Boolean!
   addCategoryImage(input: AddCategoryImageInput!): Image!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  sku: String!
+  shortDescription: String!
+  stock: String!
+  price: String!
+  image: Image
+  categories: [Category]
 }
 
 type Query {

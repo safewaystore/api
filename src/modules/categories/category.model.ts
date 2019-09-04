@@ -1,11 +1,7 @@
-import {
-  prop as Prop,
-  Typegoose,
-  Ref,
-  arrayProp as ArrayProp,
-} from 'typegoose';
+import { prop as Prop, Typegoose, Ref, arrayProp } from 'typegoose';
 import { Field, ObjectType, ID } from 'type-graphql';
 import { Image } from '../../commom/interfaces/image';
+import { Product } from '../products/product.model';
 
 @ObjectType()
 export class Category extends Typegoose {
@@ -35,8 +31,12 @@ export class Category extends Typegoose {
   public parent: Ref<Category>;
 
   @Field(() => Category, { nullable: 'itemsAndList' })
-  @ArrayProp({ itemsRef: { name: 'Category' } })
+  @arrayProp({ itemsRef: { name: 'Category' } })
   public children: Array<Ref<Category>>;
+
+  @Field(() => Product, { nullable: true })
+  @Prop({ ref: { name: 'Product' } })
+  public product: Ref<Product>;
 
   @Field(() => Date)
   public createdAt: Date;
