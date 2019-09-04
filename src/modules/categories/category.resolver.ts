@@ -41,18 +41,17 @@ export class CategoryResolver {
 
   @FieldResolver(() => Image)
   public async image(@Root('_doc') category: Category) {
-    return (
-      category.image.path && {
-        path: await FileS3.url(category.image.path),
+    if (!category.image) return null;
+    return {
+      path: await FileS3.url(category.image.path),
 
-        variants: this.consts.variants.images.map(categoryVariant => ({
-          name: categoryVariant.name,
-          path: FileS3.url(category.image.path, categoryVariant.name),
-          width: categoryVariant.width,
-          height: categoryVariant.height,
-        })),
-      }
-    );
+      variants: this.consts.variants.images.map(categoryVariant => ({
+        name: categoryVariant.name,
+        path: FileS3.url(category.image.path, categoryVariant.name),
+        width: categoryVariant.width,
+        height: categoryVariant.height,
+      })),
+    };
   }
 
   @FieldResolver(() => Category)

@@ -113,8 +113,6 @@ export class FileS3 {
       });
     }
 
-    console.log(params);
-
     return s3
       .deleteObject(params)
       .promise()
