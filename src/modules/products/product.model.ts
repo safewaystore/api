@@ -8,23 +8,21 @@ import { ProductDescription } from './interfaces/productDescription';
 
 @ObjectType()
 export class Product extends Typegoose {
-  @Field(() => ID)
+  public _id: string;
+
+  @Field(() => ID, { nullable: true })
   @Prop()
   public id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  public name: string;
+  public title: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  public stock: string;
+  public slug: string;
 
-  @Field(() => Image, { nullable: true })
-  @Prop()
-  public image: Image;
-
-  @Field(() => ProductDescription)
+  @Field(() => ProductDescription, { nullable: true })
   @Prop({ _id: false })
   public description: ProductDescription;
 

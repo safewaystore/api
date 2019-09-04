@@ -1,24 +1,27 @@
 import { InputType, Field } from 'type-graphql';
 import { Stream } from 'stream';
 import { GraphQLUpload } from 'graphql-upload';
+import { ProductDescriptionInput } from './productDescription.input';
+import { ProductInventaryInput } from './productInventary.input';
+import { Category } from '../../categories/category.model';
 
 @InputType()
 export class CreateProductInput {
   @Field(() => String)
-  public name: string;
+  public title: string;
 
   @Field(() => String)
-  public sku: string;
+  public slug: string;
 
-  @Field(() => String)
-  public shortDescription: string;
+  @Field(() => ProductDescriptionInput)
+  public description: ProductDescriptionInput;
 
-  @Field(() => String)
-  public stock: string;
+  @Field(() => ProductInventaryInput)
+  public inventary: ProductInventaryInput;
 
-  @Field(() => String)
-  public price: number;
+  // @Field(() => Category)
+  // public categories: Category;
 
-  @Field(() => GraphQLUpload, { nullable: true })
-  public image: Stream;
+  // @Field(() => GraphQLUpload, { nullable: true })
+  // public image: Stream;
 }

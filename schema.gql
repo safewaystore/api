@@ -24,6 +24,13 @@ input CreateCategoryInput {
   parentId: ID
 }
 
+input CreateProductInput {
+  title: String!
+  slug: String!
+  description: ProductDescriptionInput!
+  inventary: ProductInventaryInput!
+}
+
 input CreateUserInput {
   firstName: String!
   lastName: String!
@@ -54,16 +61,34 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Boolean!
+  createProduct(input: CreateProductInput!): Product!
 }
 
 type Product {
-  id: ID!
-  name: String!
-  shortDescription: String!
-  stock: String!
-  price: String!
-  image: Image
+  id: ID
+  title: String
+  slug: String
+  description: ProductDescription
+  inventary: ProductInventary
   categories: [Category]
+}
+
+type ProductDescription {
+  small: String
+  large: String
+}
+
+input ProductDescriptionInput {
+  small: String
+  large: String
+}
+
+type ProductInventary {
+  sku: String
+}
+
+input ProductInventaryInput {
+  sku: String
 }
 
 type Query {
