@@ -3,11 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-input AddCategoryImageInput {
-  categoryId: ID!
-  image: Upload!
-}
-
 type Category {
   id: ID
   title: String!
@@ -59,7 +54,6 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   updateCategory(input: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Boolean!
-  addCategoryImage(input: AddCategoryImageInput!): Image!
 }
 
 type Product {

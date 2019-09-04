@@ -21,7 +21,7 @@ export class Category extends Typegoose {
 
   @Field(() => Image, { nullable: true })
   @Prop()
-  public image: ImageSchema;
+  public image: string;
 
   @Field(() => String)
   @Prop()

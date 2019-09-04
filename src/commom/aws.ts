@@ -107,8 +107,6 @@ export class FileS3 {
         array.splice(-1, 0, v.name);
         newParams.Key = array.join('/');
 
-        console.log(newParams);
-
         await s3.deleteObject(newParams).promise();
       });
     }

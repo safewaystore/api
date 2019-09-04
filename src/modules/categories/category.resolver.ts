@@ -43,11 +43,11 @@ export class CategoryResolver {
   public async image(@Root('_doc') category: Category) {
     if (!category.image) return null;
     return {
-      path: await FileS3.url(category.image.path),
+      path: await FileS3.url(category.image),
 
       variants: this.consts.variants.images.map(categoryVariant => ({
         name: categoryVariant.name,
-        path: FileS3.url(category.image.path, categoryVariant.name),
+        path: FileS3.url(category.image, categoryVariant.name),
         width: categoryVariant.width,
         height: categoryVariant.height,
       })),
@@ -106,7 +106,7 @@ export class CategoryResolver {
             .findByIdAndUpdate(
               category.id,
               {
-                'image.path': uploadedImage,
+                image: uploadedImage,
               },
               { new: true }
             )
@@ -131,7 +131,7 @@ export class CategoryResolver {
     if (!category) throw new CategoryNotFound();
 
     if (input.image) {
-      const imagePath = category.image.path;
+      const imagePath = category.image;
 
       return FileS3.remove(imagePath, this.consts.variants.images).then(
         async () => {
@@ -147,7 +147,7 @@ export class CategoryResolver {
               title: input.title,
               description: input.description,
               slug: input.slug,
-              'image.path': uploadedImage,
+              image: uploadedImage,
             },
             {
               new: true,
@@ -163,7 +163,7 @@ export class CategoryResolver {
         title: input.title,
         description: input.description,
         slug: input.slug,
-        'image.path': input.image,
+        image: input.image,
       },
       {
         new: true,
@@ -179,34 +179,5 @@ export class CategoryResolver {
     if (!category) throw new CategoryNotFound();
 
     return category.remove().then(res => res && true);
-  }
-
-  @Mutation(() => Image)
-  public async addCategoryImage(
-    @Arg('input', () => AddCategoryImageInput) input: AddCategoryImageInput
-  ) {
-    const category = await categoryModel.findOne({
-      _id: input.categoryId,
-    });
-
-    if (!category) throw new CategoryNotFound();
-
-    const uploadedImage = await FileS3.upload(input.image, {
-      path: 'category',
-      id: category.id,
-      variants: this.consts.variants.images,
-    });
-
-    return categoryModel
-      .findByIdAndUpdate(
-        category.id,
-        {
-          'image.path': uploadedImage,
-        },
-        { new: true }
-      )
-      .then(categoryUpdated => {
-        console.log('Ok!');
-      });
   }
 }
