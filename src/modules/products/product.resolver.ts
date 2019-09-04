@@ -9,10 +9,7 @@ export class ProductResolver {
     return productModel
       .create({
         name: input.name,
-        sku: input.sku,
         stock: input.stock,
-        price: input.price,
-        image: input.image,
       })
       .then(async Category => {
         console.log('Ok');

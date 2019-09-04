@@ -59,7 +59,6 @@ type Mutation {
 type Product {
   id: ID!
   name: String!
-  sku: String!
   shortDescription: String!
   stock: String!
   price: String!

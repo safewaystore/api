@@ -83,7 +83,7 @@ export class FileS3 {
               Key: `${envFolder}/${options.path}/${options.id}/${variant.name}/${uuid}_${filename}`,
               ContentType: mimetype,
             };
-            console.log(variantOption);
+
             await s3.upload(variantOption).promise();
           });
         }
