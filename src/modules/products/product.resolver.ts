@@ -3,7 +3,8 @@ import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
 import { createProductSchema } from './product.validations';
 import { YupValidate } from '../../commom/decorators/yupValidation';
-import { Category } from '../categories/category.model';
+import { Category, categoryModel } from '../categories/category.model';
+import { CategoryNotFound } from '../../commom/errors';
 
 export class ProductResolver {
   @Authorized('admin')
@@ -24,15 +25,21 @@ export class ProductResolver {
           sku: input.inventary.sku,
         },
       })
-      // .then(product => {
-      //   if (!input.categories) {
-      //     input.categories.forEach(category => {
-      //       product.categories.push(category.id);
-      //     });
-      //     product.save();
-      //   }
+      .then(product => {
+        if (input.categories) {
+          input.categories.forEach(async cat => {
+            const category = await categoryModel.findById(cat);
 
-      //   return product;
-      // });
+            if (!category) throw new CategoryNotFound();
+
+            product.categories.push(category.id);
+            category.products.push(product._id);
+            await category.save();
+            await product.save();
+          });
+        }
+
+        return product;
+      });
   }
 }

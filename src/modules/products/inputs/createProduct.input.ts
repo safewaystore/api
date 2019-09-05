@@ -1,6 +1,4 @@
-import { InputType, Field } from 'type-graphql';
-import { Stream } from 'stream';
-import { GraphQLUpload } from 'graphql-upload';
+import { InputType, Field, ID } from 'type-graphql';
 import { ProductDescriptionInput } from './productDescription.input';
 import { ProductInventaryInput } from './productInventary.input';
 import { Category } from '../../categories/category.model';
@@ -19,8 +17,11 @@ export class CreateProductInput {
   @Field(() => ProductInventaryInput)
   public inventary: ProductInventaryInput;
 
-  // @Field(() => Category)
-  // public categories: Category;
+  @Field(() => [String])
+  public categories: string[];
+
+  // @Field(() => [Category])
+  // public categories: Array<Category>;
 
   // @Field(() => GraphQLUpload, { nullable: true })
   // public image: Stream;

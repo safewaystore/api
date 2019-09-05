@@ -11,7 +11,7 @@ type Category {
   slug: String!
   parent: Category
   children: [Category]
-  product: Product
+  products: [Product]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -29,6 +29,7 @@ input CreateProductInput {
   slug: String!
   description: ProductDescriptionInput!
   inventary: ProductInventaryInput!
+  categories: [String!]!
 }
 
 input CreateUserInput {
