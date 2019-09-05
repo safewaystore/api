@@ -27,7 +27,7 @@ import { CategoryConst } from './category.consts';
 export class CategoryResolver {
   constructor(private readonly consts = CategoryConst) {}
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @Query(() => [Category])
   public async allCategories() {
     return categoryModel.find({ parent: null });
