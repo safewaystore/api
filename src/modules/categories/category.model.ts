@@ -2,7 +2,6 @@ import { prop as Prop, Typegoose, Ref, arrayProp } from 'typegoose';
 import { Field, ObjectType, ID } from 'type-graphql';
 import { Image } from '../../commom/interfaces/image';
 import { Product } from '../products/product.model';
-import { ImageSchema } from './interfaces/image';
 
 @ObjectType()
 export class Category extends Typegoose {
@@ -11,7 +10,7 @@ export class Category extends Typegoose {
   @Field(() => ID, { nullable: true })
   public readonly id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
   public title: String;
 
@@ -23,7 +22,7 @@ export class Category extends Typegoose {
   @Prop()
   public image: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
   public slug: string;
 

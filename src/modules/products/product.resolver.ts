@@ -12,6 +12,7 @@ import { createProductSchema } from './product.validations';
 import { YupValidate } from '../../commom/decorators/yupValidation';
 import { Category, categoryModel } from '../categories/category.model';
 import { CategoryNotFound } from '../../commom/errors';
+import { UpdateProductInput } from './inputs/updateProduct.input';
 
 export class ProductResolver {
   @Authorized('admin')
@@ -20,9 +21,11 @@ export class ProductResolver {
     return productModel.find({});
   }
 
-  // @FieldResolver(() => [Category])
-  // public async categories(@Root() product: Product) {
-  //   return categoryModel.find({ product: product.id });
+  // @FieldResolver()
+  // public async categories(@Root('_doc') product: Product) {
+  //   return categoryModel.find({
+  //     products: product._id,
+  //   });
   // }
 
   @Authorized('admin')
@@ -58,4 +61,8 @@ export class ProductResolver {
         return product;
       });
   }
+
+  public async updateProduct(
+    @Arg('input', () => UpdateProductInput) input: UpdateProductInput
+  ) {}
 }

@@ -9,8 +9,7 @@ export class Product extends Typegoose {
   public readonly _id: string;
 
   @Field(() => ID, { nullable: true })
-  @Prop()
-  public id: string;
+  public readonly id: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
@@ -20,13 +19,13 @@ export class Product extends Typegoose {
   @Prop()
   public slug: string;
 
+  @Field(() => String, { nullable: true })
+  @Prop()
+  public status: string;
+
   @Field(() => ProductDescription, { nullable: true })
   @Prop({ _id: false })
   public description: ProductDescription;
-
-  @Field(() => String)
-  @Prop()
-  public status: string;
 
   @Field(() => ProductInventary, { nullable: true })
   @Prop({ _id: false })

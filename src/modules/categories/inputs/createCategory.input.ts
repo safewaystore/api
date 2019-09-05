@@ -7,14 +7,14 @@ export class CreateCategoryInput {
   @Field(() => String)
   public title: string;
 
+  @Field(() => String)
+  public slug: string;
+
   @Field(() => String, { nullable: true })
   public description: string;
 
   @Field(() => GraphQLUpload, { nullable: true })
   public image: Stream;
-
-  @Field(() => String)
-  public slug: string;
 
   @Field(() => ID, { nullable: true })
   public parentId: string;

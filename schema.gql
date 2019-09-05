@@ -5,10 +5,10 @@
 
 type Category {
   id: ID
-  title: String!
+  title: String
   description: String
   image: Image
-  slug: String!
+  slug: String
   parent: Category
   children: [Category]
   products: [Product]
@@ -18,18 +18,18 @@ type Category {
 
 input CreateCategoryInput {
   title: String!
+  slug: String!
   description: String
   image: Upload
-  slug: String!
   parentId: ID
 }
 
 input CreateProductInput {
   title: String!
   slug: String!
-  description: ProductDescriptionInput!
-  inventary: ProductInventaryInput!
-  categories: [String!]!
+  description: ProductDescriptionInput
+  inventary: ProductInventaryInput
+  categories: [String!]
 }
 
 input CreateUserInput {
@@ -69,8 +69,8 @@ type Product {
   id: ID
   title: String
   slug: String
+  status: String
   description: ProductDescription
-  status: String!
   inventary: ProductInventary
   categories: [Category]
 }
@@ -107,6 +107,14 @@ input UpdateCategoryInput {
   image: Upload
   slug: String!
   parentId: ID
+}
+
+input UpdateProductInput {
+  title: String!
+  slug: String!
+  description: ProductDescriptionInput
+  inventary: ProductInventaryInput
+  categories: [String!]
 }
 
 """The `Upload` scalar type represents a file upload."""
