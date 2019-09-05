@@ -70,6 +70,7 @@ type Product {
   title: String
   slug: String
   description: ProductDescription
+  status: String!
   inventary: ProductInventary
   categories: [Category]
 }
@@ -96,6 +97,7 @@ type Query {
   users: [User!]!
   allCategories: [Category!]!
   getCategory(id: String!): Category!
+  getProducts: [Product!]!
 }
 
 input UpdateCategoryInput {

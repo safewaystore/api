@@ -1,4 +1,11 @@
-import { Arg, Authorized, Mutation } from 'type-graphql';
+import {
+  Arg,
+  Authorized,
+  Mutation,
+  Query,
+  FieldResolver,
+  Root,
+} from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
 import { createProductSchema } from './product.validations';
@@ -7,6 +14,17 @@ import { Category, categoryModel } from '../categories/category.model';
 import { CategoryNotFound } from '../../commom/errors';
 
 export class ProductResolver {
+  @Authorized('admin')
+  @Query(() => [Product])
+  public async getProducts() {
+    return productModel.find({});
+  }
+
+  // @FieldResolver(() => [Category])
+  // public async categories(@Root() product: Product) {
+  //   return categoryModel.find({ product: product.id });
+  // }
+
   @Authorized('admin')
   @YupValidate(createProductSchema)
   @Mutation(() => Product)
@@ -27,15 +45,13 @@ export class ProductResolver {
       })
       .then(product => {
         if (input.categories) {
-          input.categories.forEach(async cat => {
+          input.categories.map(async cat => {
             const category = await categoryModel.findById(cat);
 
             if (!category) throw new CategoryNotFound();
 
-            product.categories.push(category.id);
-            category.products.push(product._id);
-            await category.save();
-            await product.save();
+            await product.updateOne({ $push: { categories: category.id } });
+            await category.updateOne({ $push: { products: product._id } });
           });
         }
 

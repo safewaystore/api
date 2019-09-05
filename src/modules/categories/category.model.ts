@@ -35,10 +35,6 @@ export class Category extends Typegoose {
   @arrayProp({ itemsRef: { name: 'Category' } })
   public children: Array<Ref<Category>>;
 
-  // @Field(() => Product, { nullable: true })
-  // @Prop({ ref: { name: 'Product' } })
-  // public product: Ref<Product>;
-
   @Field(() => [Product], { nullable: 'itemsAndList' })
   @arrayProp({ itemsRef: { name: 'Product' } })
   public products: Array<Ref<Product>>;
