@@ -4,6 +4,9 @@ import { ProductInventaryInput } from './productInventary.input';
 
 @InputType()
 export class UpdateProductInput {
+  @Field(() => ID)
+  public id: String;
+
   @Field(() => String)
   public title: string;
 

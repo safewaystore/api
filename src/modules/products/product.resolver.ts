@@ -11,7 +11,7 @@ import { productModel, Product } from './product.model';
 import { createProductSchema } from './product.validations';
 import { YupValidate } from '../../commom/decorators/yupValidation';
 import { Category, categoryModel } from '../categories/category.model';
-import { CategoryNotFound } from '../../commom/errors';
+import { CategoryNotFound, ProductNotFound } from '../../commom/errors';
 import { UpdateProductInput } from './inputs/updateProduct.input';
 
 export class ProductResolver {
@@ -62,7 +62,30 @@ export class ProductResolver {
       });
   }
 
+  @Mutation(() => Product)
   public async updateProduct(
     @Arg('input', () => UpdateProductInput) input: UpdateProductInput
-  ) {}
+  ) {
+    const product = await productModel.findOne({ _id: input.id });
+
+    if (!product) throw new ProductNotFound();
+
+    return productModel.findByIdAndUpdate(
+      product.id,
+      {
+        title: input.title,
+        slug: input.slug,
+        description: {
+          small: input.description.small,
+          large: input.description.large,
+        },
+        inventary: {
+          sku: input.inventary.sku,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+  }
 }

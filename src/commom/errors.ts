@@ -21,3 +21,9 @@ export class CategoryNotFound extends Error {
     super('Categoria não encontrada.');
   }
 }
+
+export class ProductNotFound extends Error {
+  constructor() {
+    super('Produto não encontrada.');
+  }
+}
