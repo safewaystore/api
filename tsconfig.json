@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2016",
     "module": "commonjs",
-    "lib": ["esnext", "esnext.asynciterable"],
+    "lib": ["es2016", "esnext.asynciterable"],
     "outDir": "./dist/",
     "strict": true,
     "noImplicitAny": true,

@@ -5,6 +5,7 @@ import {
   Query,
   FieldResolver,
   Root,
+  Resolver,
 } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
@@ -14,6 +15,7 @@ import { Category, categoryModel } from '../categories/category.model';
 import { CategoryNotFound, ProductNotFound } from '../../commom/errors';
 import { UpdateProductInput } from './inputs/updateProduct.input';
 
+@Resolver(() => Product)
 export class ProductResolver {
   @Authorized('admin')
   @Query(() => [Product])
@@ -21,12 +23,16 @@ export class ProductResolver {
     return productModel.find({});
   }
 
-  // @FieldResolver()
-  // public async categories(@Root('_doc') product: Product) {
-  //   return categoryModel.find({
-  //     products: product._id,
-  //   });
-  // }
+  @FieldResolver(() => [Category])
+  public async categories(@Root('_doc') product: Product) {
+    return categoryModel.find({
+      _id: { $in: product.categories },
+    });
+
+    // return productModel
+    //   .findOne({ _id: product._id })
+    //   .populate('categories');
+  }
 
   @Authorized('admin')
   @YupValidate(createProductSchema)

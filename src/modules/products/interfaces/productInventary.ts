@@ -6,8 +6,4 @@ export class ProductInventary {
   @Field(() => String, { nullable: true })
   @Prop()
   public sku: string;
-
-  // @Field(() => Boolean)
-  // @Prop()
-  // public stockStatus: boolean;
 }
