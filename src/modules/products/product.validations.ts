@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { productModel } from './product.model';
 
 export const createProductSchema = () =>
   yup.object().shape({
@@ -10,7 +11,20 @@ export const createProductSchema = () =>
     slug: yup
       .string()
       .trim()
-      .required(),
+      .required()
+      .test({
+        name: 'unique',
+        message: '${path} must be unique',
+        exclusive: true,
+        test: async value => {
+          return productModel.findOne({ slug: value }).then(product => {
+            if (product) {
+              return false;
+            }
+            return true;
+          });
+        },
+      }),
   });
 
 export const updateProductSchema = () =>
@@ -23,5 +37,18 @@ export const updateProductSchema = () =>
     slug: yup
       .string()
       .trim()
-      .required(),
+      .required()
+      .test({
+        name: 'unique',
+        message: '${path} must be unique',
+        exclusive: true,
+        test: async value => {
+          return productModel.findOne({ slug: value }).then(product => {
+            if (product) {
+              return false;
+            }
+            return true;
+          });
+        },
+      }),
   });

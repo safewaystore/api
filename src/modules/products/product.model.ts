@@ -19,8 +19,8 @@ export class Product extends Typegoose {
   @Prop()
   public slug: string;
 
-  @Field(() => String, { nullable: true })
-  @Prop()
+  @Field(() => String)
+  @Prop({ default: 'published' })
   public status: string;
 
   @Field(() => ProductDescription, { nullable: true })
@@ -34,6 +34,12 @@ export class Product extends Typegoose {
   @Field(() => [Category], { nullable: 'itemsAndList' })
   @arrayProp({ itemsRef: { name: 'Category' } })
   public categories: Array<Ref<Category>>;
+
+  @Field(() => Date)
+  public createdAt: Date;
+
+  @Field(() => Date)
+  public updatedAt: Date;
 }
 
 export const productModel = new Product().getModelForClass(Product, {

@@ -71,10 +71,12 @@ type Product {
   id: ID
   title: String
   slug: String
-  status: String
+  status: String!
   description: ProductDescription
   inventary: ProductInventary
   categories: [Category]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ProductDescription {
