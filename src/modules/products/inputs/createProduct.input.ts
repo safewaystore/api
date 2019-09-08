@@ -19,10 +19,4 @@ export class CreateProductInput {
 
   @Field(() => [String], { nullable: true })
   public categories: string[];
-
-  // @Field(() => [Category])
-  // public categories: Array<Category>;
-
-  // @Field(() => GraphQLUpload, { nullable: true })
-  // public image: Stream;
 }

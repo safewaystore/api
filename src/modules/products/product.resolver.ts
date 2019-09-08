@@ -28,10 +28,6 @@ export class ProductResolver {
     return categoryModel.find({
       _id: { $in: product.categories },
     });
-
-    // return productModel
-    //   .findOne({ _id: product._id })
-    //   .populate('categories');
   }
 
   @Authorized('admin')
@@ -40,19 +36,32 @@ export class ProductResolver {
   public async createProduct(
     @Arg('input', () => CreateProductInput) input: CreateProductInput
   ) {
+    return productModel.create(input).then(product => {
+      if (input.categories) {
+        input.categories.map(async cat => {
+          const category = await categoryModel.findById(cat);
+
+          if (!category) throw new CategoryNotFound();
+
+          await product.updateOne({ $push: { categories: category.id } });
+          await category.updateOne({ $push: { products: product._id } });
+        });
+      }
+
+      return product;
+    });
+  }
+
+  @Mutation(() => Product)
+  public async updateProduct(
+    @Arg('input', () => UpdateProductInput) input: UpdateProductInput
+  ) {
     return productModel
-      .create({
-        title: input.title,
-        slug: input.slug,
-        description: {
-          small: input.description.small,
-          large: input.description.large,
-        },
-        inventary: {
-          sku: input.inventary.sku,
-        },
+      .findOneAndUpdate({ _id: input.id }, input, {
+        new: true,
       })
-      .then(product => {
+      .orFail(() => new ProductNotFound())
+      .then(async (product: any) => {
         if (input.categories) {
           input.categories.map(async cat => {
             const category = await categoryModel.findById(cat);
@@ -66,32 +75,5 @@ export class ProductResolver {
 
         return product;
       });
-  }
-
-  @Mutation(() => Product)
-  public async updateProduct(
-    @Arg('input', () => UpdateProductInput) input: UpdateProductInput
-  ) {
-    const product = await productModel.findOne({ _id: input.id });
-
-    if (!product) throw new ProductNotFound();
-
-    return productModel.findByIdAndUpdate(
-      product.id,
-      {
-        title: input.title,
-        slug: input.slug,
-        description: {
-          small: input.description.small,
-          large: input.description.large,
-        },
-        inventary: {
-          sku: input.inventary.sku,
-        },
-      },
-      {
-        new: true,
-      }
-    );
   }
 }

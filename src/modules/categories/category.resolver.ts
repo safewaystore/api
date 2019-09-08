@@ -157,18 +157,9 @@ export class CategoryResolver {
       );
     }
 
-    return categoryModel.findByIdAndUpdate(
-      category.id,
-      {
-        title: input.title,
-        description: input.description,
-        slug: input.slug,
-        image: input.image,
-      },
-      {
-        new: true,
-      }
-    );
+    return categoryModel.updateOne({ _id: category.id }, input, {
+      new: true,
+    });
   }
 
   @Authorized('admin')
