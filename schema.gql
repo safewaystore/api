@@ -64,6 +64,7 @@ type Mutation {
   removeCategory(id: String!): Boolean!
   createProduct(input: CreateProductInput!): Product!
   updateProduct(input: UpdateProductInput!): Product!
+  removeProduct(id: ID!): Boolean!
 }
 
 type Product {
@@ -96,9 +97,10 @@ input ProductInventaryInput {
 
 type Query {
   users: [User!]!
-  allCategories: [Category!]!
+  getCategories: [Category!]!
   getCategory(id: String!): Category!
   getProducts: [Product!]!
+  getProduct(id: ID!): Product!
 }
 
 input UpdateCategoryInput {

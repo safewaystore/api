@@ -6,6 +6,8 @@ import {
   FieldResolver,
   Root,
   Resolver,
+  InputType,
+  ID,
 } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
@@ -21,6 +23,11 @@ export class ProductResolver {
   @Query(() => [Product])
   public async getProducts() {
     return productModel.find({});
+  }
+
+  @Query(() => Product)
+  public async getProduct(@Arg('id', () => ID) id: string) {
+    return productModel.findById(id);
   }
 
   @FieldResolver(() => [Category])
@@ -75,5 +82,11 @@ export class ProductResolver {
 
         return product;
       });
+  }
+
+  // @Authorized('admin')
+  @Mutation(() => Boolean)
+  public async removeProduct(@Arg('id', () => ID) id: string) {
+    return productModel.findByIdAndRemove(id).then(res => res && true);
   }
 }
