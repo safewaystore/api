@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { categoryModel } from './category.model';
 
 export const createCategorySchema = () =>
   yup.object().shape({
@@ -10,7 +11,20 @@ export const createCategorySchema = () =>
     slug: yup
       .string()
       .trim()
-      .required(),
+      .required()
+      .test({
+        name: 'unique',
+        message: '${path} must be unique',
+        exclusive: true,
+        test: async value => {
+          return categoryModel.findOne({ slug: value }).then(category => {
+            if (category) {
+              return false;
+            }
+            return true;
+          });
+        },
+      }),
   });
 
 export const updateCategorySchema = () =>
@@ -23,5 +37,18 @@ export const updateCategorySchema = () =>
     slug: yup
       .string()
       .trim()
-      .required(),
+      .required()
+      .test({
+        name: 'unique',
+        message: '${path} must be unique',
+        exclusive: true,
+        test: async value => {
+          return categoryModel.findOne({ slug: value }).then(category => {
+            if (category) {
+              return false;
+            }
+            return true;
+          });
+        },
+      }),
   });
