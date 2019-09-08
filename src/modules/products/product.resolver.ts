@@ -6,12 +6,14 @@ import {
   FieldResolver,
   Root,
   Resolver,
-  InputType,
   ID,
 } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
-import { createProductSchema } from './product.validations';
+import {
+  createProductSchema,
+  updateProductSchema,
+} from './product.validations';
 import { YupValidate } from '../../commom/decorators/yupValidation';
 import { Category, categoryModel } from '../categories/category.model';
 import { CategoryNotFound, ProductNotFound } from '../../commom/errors';
@@ -27,7 +29,7 @@ export class ProductResolver {
 
   @Query(() => Product)
   public async getProduct(@Arg('id', () => ID) id: string) {
-    return productModel.findById(id);
+    return productModel.findById(id).orFail(() => new ProductNotFound());
   }
 
   @FieldResolver(() => [Category])
@@ -59,6 +61,8 @@ export class ProductResolver {
     });
   }
 
+  @Authorized('admin')
+  @YupValidate(updateProductSchema)
   @Mutation(() => Product)
   public async updateProduct(
     @Arg('input', () => UpdateProductInput) input: UpdateProductInput
@@ -84,7 +88,7 @@ export class ProductResolver {
       });
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @Mutation(() => Boolean)
   public async removeProduct(@Arg('id', () => ID) id: string) {
     return productModel.findByIdAndRemove(id).then(res => res && true);

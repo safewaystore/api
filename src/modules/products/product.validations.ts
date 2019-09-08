@@ -13,7 +13,7 @@ export const createProductSchema = () =>
       .required(),
   });
 
-export const updateCategorySchema = () =>
+export const updateProductSchema = () =>
   yup.object().shape({
     title: yup
       .string()

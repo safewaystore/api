@@ -5,8 +5,8 @@ import {
   Query,
   FieldResolver,
   Root,
-  Ctx,
   Authorized,
+  Field,
 } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';
@@ -17,17 +17,15 @@ import {
   updateCategorySchema,
 } from './category.validations';
 import { UpdateCategoryInput } from './inputs/updateCategory.input';
-import { IUser } from '../users/user.model';
 import { Image } from '../../commom/interfaces/image';
-import { AddCategoryImageInput } from './inputs/addCategoryImageInput';
 import { FileS3 } from '../../commom/aws';
 import { CategoryConst } from './category.consts';
+import { Product, productModel } from '../products/product.model';
 
 @Resolver(() => Category)
 export class CategoryResolver {
   constructor(private readonly consts = CategoryConst) {}
 
-  // @Authorized('admin')
   @Query(() => [Category])
   public async getCategories() {
     return categoryModel.find({ parent: null });
@@ -62,6 +60,13 @@ export class CategoryResolver {
   @FieldResolver(() => [Category])
   public async children(@Root('_doc') category: Category) {
     return categoryModel.find({ parent: category._id });
+  }
+
+  @FieldResolver(() => [Product])
+  public async products(@Root('_doc') category: Category) {
+    return productModel.find({
+      _id: { $in: category.products },
+    });
   }
 
   @Authorized('admin')
