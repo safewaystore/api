@@ -1,6 +1,7 @@
 import { InputType, Field, ID } from 'type-graphql';
 import { ProductDescriptionInput } from './productDescription.input';
 import { ProductInventaryInput } from './productInventary.input';
+import { Status } from '../enums/status.enum';
 
 @InputType()
 export class UpdateProductInput {
@@ -12,6 +13,9 @@ export class UpdateProductInput {
 
   @Field(() => String)
   public slug: string;
+
+  @Field(() => Status)
+  public status: Status;
 
   @Field(() => ProductDescriptionInput, { nullable: true })
   public description: ProductDescriptionInput;

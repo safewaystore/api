@@ -1,7 +1,7 @@
-import { InputType, Field, ID } from 'type-graphql';
+import { InputType, Field } from 'type-graphql';
 import { ProductDescriptionInput } from './productDescription.input';
 import { ProductInventaryInput } from './productInventary.input';
-import { Category } from '../../categories/category.model';
+import { Status } from '../enums/status.enum';
 
 @InputType()
 export class CreateProductInput {
@@ -10,6 +10,9 @@ export class CreateProductInput {
 
   @Field(() => String)
   public slug: string;
+
+  @Field(() => Status)
+  public status: Status;
 
   @Field(() => ProductDescriptionInput, { nullable: true })
   public description: ProductDescriptionInput;

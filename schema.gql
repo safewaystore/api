@@ -27,6 +27,7 @@ input CreateCategoryInput {
 input CreateProductInput {
   title: String!
   slug: String!
+  status: Status!
   description: ProductDescriptionInput
   inventary: ProductInventaryInput
   categories: [String!]
@@ -71,7 +72,7 @@ type Product {
   id: ID
   title: String
   slug: String
-  status: String!
+  status: Status!
   description: ProductDescription
   inventary: ProductInventary
   categories: [Category]
@@ -105,6 +106,12 @@ type Query {
   getProduct(id: ID!): Product!
 }
 
+"""Product Status"""
+enum Status {
+  published
+  draft
+}
+
 input UpdateCategoryInput {
   id: ID!
   title: String!
@@ -118,6 +125,7 @@ input UpdateProductInput {
   id: ID!
   title: String!
   slug: String!
+  status: Status!
   description: ProductDescriptionInput
   inventary: ProductInventaryInput
   categories: [String!]

@@ -3,6 +3,7 @@ import { ID, Field, ObjectType } from 'type-graphql';
 import { Category } from '../categories/category.model';
 import { ProductInventary } from './interfaces/productInventary';
 import { ProductDescription } from './interfaces/productDescription';
+import { Status } from './enums/status.enum';
 
 @ObjectType()
 export class Product extends Typegoose {
@@ -19,9 +20,9 @@ export class Product extends Typegoose {
   @Prop()
   public slug: string;
 
-  @Field(() => String)
+  @Field(() => Status)
   @Prop({ default: 'published' })
-  public status: string;
+  public status: Status;
 
   @Field(() => ProductDescription, { nullable: true })
   @Prop({ _id: false })
