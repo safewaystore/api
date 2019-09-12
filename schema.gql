@@ -73,6 +73,7 @@ type Product {
   title: String
   slug: String
   status: Status!
+  images: [Image!]
   description: ProductDescription
   inventary: ProductInventary
   categories: [Category]

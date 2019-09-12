@@ -4,6 +4,7 @@ import { Category } from '../categories/category.model';
 import { ProductInventary } from './interfaces/productInventary';
 import { ProductDescription } from './interfaces/productDescription';
 import { Status } from './enums/status.enum';
+import { Image } from '../../commom/interfaces/image';
 
 @ObjectType()
 export class Product extends Typegoose {
@@ -23,6 +24,10 @@ export class Product extends Typegoose {
   @Field(() => Status)
   @Prop({ default: 'published' })
   public status: Status;
+
+  @Field(() => [Image], { nullable: true })
+  @Prop()
+  public images: string;
 
   @Field(() => ProductDescription, { nullable: true })
   @Prop({ _id: false })
