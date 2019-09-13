@@ -18,9 +18,13 @@ import { YupValidate } from '../../commom/decorators/yupValidation';
 import { Category, categoryModel } from '../categories/category.model';
 import { CategoryNotFound, ProductNotFound } from '../../commom/errors';
 import { UpdateProductInput } from './inputs/updateProduct.input';
+import { FileS3 } from '../../commom/aws';
+import { ProductConst } from './category.consts';
 
 @Resolver(() => Product)
 export class ProductResolver {
+  constructor(private readonly consts = ProductConst) {}
+
   @Authorized('admin')
   @Query(() => [Product])
   public async getProducts() {
@@ -39,26 +43,42 @@ export class ProductResolver {
     });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @YupValidate(createProductSchema)
   @Mutation(() => Product)
   public async createProduct(
     @Arg('input', () => CreateProductInput) input: CreateProductInput
   ) {
-    return productModel.create(input).then(product => {
-      if (input.categories) {
-        input.categories.map(async cat => {
-          const category = await categoryModel.findById(cat);
+    return productModel
+      .create({ title: input.title, slug: input.slug })
+      .then(product => {
+        if (input.categories) {
+          input.categories.map(async cat => {
+            const category = await categoryModel.findById(cat);
 
-          if (!category) throw new CategoryNotFound();
+            if (!category) throw new CategoryNotFound();
 
-          await product.updateOne({ $push: { categories: category.id } });
-          await category.updateOne({ $push: { products: product._id } });
-        });
-      }
+            await product.updateOne({ $push: { categories: category.id } });
+            await category.updateOne({ $push: { products: product._id } });
+          });
+        }
 
-      return product;
-    });
+        if (input.images) {
+          // console.log(input.images);
+          input.images.map(async img => {
+            // console.log(img);
+            const uploadedImage = await FileS3.upload(img, {
+              path: 'product',
+              id: product.id,
+              variants: this.consts.variants.images,
+            });
+
+            await product.updateOne({ $push: { images: uploadedImage } });
+          });
+        }
+
+        return product;
+      });
   }
 
   @Authorized('admin')

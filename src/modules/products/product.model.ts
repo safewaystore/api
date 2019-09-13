@@ -5,6 +5,8 @@ import { ProductInventary } from './interfaces/productInventary';
 import { ProductDescription } from './interfaces/productDescription';
 import { Status } from './enums/status.enum';
 import { Image } from '../../commom/interfaces/image';
+import { ImageSchema } from './interfaces/image';
+import { Stream } from 'stream';
 
 @ObjectType()
 export class Product extends Typegoose {
@@ -21,13 +23,9 @@ export class Product extends Typegoose {
   @Prop()
   public slug: string;
 
-  @Field(() => Status)
+  @Field(() => Status, { nullable: true })
   @Prop({ default: 'published' })
   public status: Status;
-
-  @Field(() => [Image], { nullable: true })
-  @Prop()
-  public images: string;
 
   @Field(() => ProductDescription, { nullable: true })
   @Prop({ _id: false })
@@ -36,6 +34,11 @@ export class Product extends Typegoose {
   @Field(() => ProductInventary, { nullable: true })
   @Prop({ _id: false })
   public inventary: ProductInventary;
+
+  @Field(() => [Image], { nullable: 'itemsAndList' })
+  @arrayProp({ items: String })
+  // @Prop()
+  public images: string[];
 
   @Field(() => [Category], { nullable: 'itemsAndList' })
   @arrayProp({ itemsRef: { name: 'Category' } })

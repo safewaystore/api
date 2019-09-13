@@ -69,7 +69,7 @@ export class CategoryResolver {
     });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
@@ -101,6 +101,7 @@ export class CategoryResolver {
         }
 
         if (input.image) {
+          console.log(input.image);
           const uploadedImage = await FileS3.upload(input.image, {
             path: 'category',
             id: category.id,

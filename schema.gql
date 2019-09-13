@@ -27,10 +27,11 @@ input CreateCategoryInput {
 input CreateProductInput {
   title: String!
   slug: String!
-  status: Status!
+  status: Status
   description: ProductDescriptionInput
   inventary: ProductInventaryInput
   categories: [String!]
+  images: [Upload!]
 }
 
 input CreateUserInput {
@@ -72,10 +73,10 @@ type Product {
   id: ID
   title: String
   slug: String
-  status: Status!
-  images: [Image!]
+  status: Status
   description: ProductDescription
   inventary: ProductInventary
+  images: [Image]
   categories: [Category]
   createdAt: DateTime!
   updatedAt: DateTime!
