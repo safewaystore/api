@@ -5,8 +5,6 @@ import { ProductInventary } from './interfaces/productInventary';
 import { ProductDescription } from './interfaces/productDescription';
 import { Status } from './enums/status.enum';
 import { Image } from '../../commom/interfaces/image';
-import { ImageSchema } from './interfaces/image';
-import { Stream } from 'stream';
 
 @ObjectType()
 export class Product extends Typegoose {
@@ -37,7 +35,6 @@ export class Product extends Typegoose {
 
   @Field(() => [Image], { nullable: 'itemsAndList' })
   @arrayProp({ items: String })
-  // @Prop()
   public images: string[];
 
   @Field(() => [Category], { nullable: 'itemsAndList' })

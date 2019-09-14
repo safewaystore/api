@@ -49,36 +49,34 @@ export class ProductResolver {
   public async createProduct(
     @Arg('input', () => CreateProductInput) input: CreateProductInput
   ) {
-    return productModel
-      .create({ title: input.title, slug: input.slug })
-      .then(product => {
-        if (input.categories) {
-          input.categories.map(async cat => {
-            const category = await categoryModel.findById(cat);
+    const { images, ...data } = input;
 
-            if (!category) throw new CategoryNotFound();
+    return productModel.create({ ...data }).then(product => {
+      if (input.categories) {
+        input.categories.map(async cat => {
+          const category = await categoryModel.findById(cat);
 
-            await product.updateOne({ $push: { categories: category.id } });
-            await category.updateOne({ $push: { products: product._id } });
+          if (!category) throw new CategoryNotFound();
+
+          await product.updateOne({ $push: { categories: category.id } });
+          await category.updateOne({ $push: { products: product._id } });
+        });
+      }
+
+      if (images) {
+        images.map(async img => {
+          const uploadedImage = await FileS3.upload(img, {
+            path: 'product',
+            id: product.id,
+            variants: this.consts.variants.images,
           });
-        }
 
-        if (input.images) {
-          // console.log(input.images);
-          input.images.map(async img => {
-            // console.log(img);
-            const uploadedImage = await FileS3.upload(img, {
-              path: 'product',
-              id: product.id,
-              variants: this.consts.variants.images,
-            });
+          await product.updateOne({ $push: { images: uploadedImage } });
+        });
+      }
 
-            await product.updateOne({ $push: { images: uploadedImage } });
-          });
-        }
-
-        return product;
-      });
+      return product;
+    });
   }
 
   @Authorized('admin')
