@@ -20,6 +20,7 @@ import { CategoryNotFound, ProductNotFound } from '../../commom/errors';
 import { UpdateProductInput } from './inputs/updateProduct.input';
 import { FileS3 } from '../../commom/aws';
 import { ProductConst } from './category.consts';
+import { Image } from '../../commom/interfaces/image';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -41,6 +42,19 @@ export class ProductResolver {
     return categoryModel.find({
       _id: { $in: product.categories },
     });
+  }
+
+  @FieldResolver(() => [Image])
+  public async images(@Root('_doc') product: Product) {
+    return product.images.map(image => ({
+      path: FileS3.url(image),
+      variants: this.consts.variants.images.map(variant => ({
+        name: variant.name,
+        path: FileS3.url(image, variant.name),
+        width: variant.width,
+        height: variant.height,
+      })),
+    }));
   }
 
   // @Authorized('admin')
