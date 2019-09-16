@@ -6,7 +6,6 @@ import {
   FieldResolver,
   Root,
   Authorized,
-  Field,
 } from 'type-graphql';
 import { Category, categoryModel } from './category.model';
 import { CreateCategoryInput } from './inputs/createCategory.input';

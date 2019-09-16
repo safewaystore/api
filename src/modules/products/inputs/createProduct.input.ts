@@ -3,8 +3,6 @@ import { ProductDescriptionInput } from './productDescription.input';
 import { ProductInventaryInput } from './productInventary.input';
 import { Status } from '../enums/status.enum';
 import { GraphQLUpload } from 'graphql-upload';
-import { Stream } from 'stream';
-import { Image } from '../../../commom/interfaces/image';
 
 @InputType()
 export class CreateProductInput {

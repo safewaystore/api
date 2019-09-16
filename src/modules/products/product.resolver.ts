@@ -78,6 +78,10 @@ export class ProductResolver {
       }
 
       if (images) {
+        categoryModel.find({
+          _id: { $in: product.categories },
+        });
+
         images.map(async img => {
           const uploadedImage = await FileS3.upload(img, {
             path: 'product',
@@ -93,16 +97,22 @@ export class ProductResolver {
     });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @YupValidate(updateProductSchema)
   @Mutation(() => Product)
   public async updateProduct(
     @Arg('input', () => UpdateProductInput) input: UpdateProductInput
   ) {
+    const { images, ...data } = input;
+
     return productModel
-      .findOneAndUpdate({ _id: input.id }, input, {
-        new: true,
-      })
+      .findOneAndUpdate(
+        { _id: input.id },
+        { ...data },
+        {
+          new: true,
+        }
+      )
       .orFail(() => new ProductNotFound())
       .then(async (product: any) => {
         if (input.categories) {
@@ -113,6 +123,18 @@ export class ProductResolver {
 
             await product.updateOne({ $push: { categories: category.id } });
             await category.updateOne({ $push: { products: product._id } });
+          });
+        }
+
+        if (images) {
+          images.map(async img => {
+            const uploadedImage = await FileS3.upload(img, {
+              path: 'product',
+              id: product.id,
+              variants: this.consts.variants.images,
+            });
+
+            await product.updateOne({ $push: { images: uploadedImage } });
           });
         }
 
