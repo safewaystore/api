@@ -67,6 +67,7 @@ type Mutation {
   createProduct(input: CreateProductInput!): Product!
   updateProduct(input: UpdateProductInput!): Product!
   removeProduct(id: ID!): Boolean!
+  removeProductGalleryImage(input: removeProductGalleryImage!): Boolean!
 }
 
 type Product {
@@ -106,6 +107,11 @@ type Query {
   getCategory(id: String!): Category!
   getProducts: [Product!]!
   getProduct(id: ID!): Product!
+}
+
+input removeProductGalleryImage {
+  productId: ID!
+  imagePath: String!
 }
 
 """Product Status"""

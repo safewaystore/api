@@ -7,6 +7,7 @@ import {
   Root,
   Resolver,
   ID,
+  Ctx,
 } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
@@ -21,6 +22,7 @@ import { UpdateProductInput } from './inputs/updateProduct.input';
 import { FileS3 } from '../../commom/aws';
 import { ProductConst } from './category.consts';
 import { Image } from '../../commom/interfaces/image';
+import { removeProductGalleryImage } from './inputs/removeProductGalleryImage.input';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -84,7 +86,7 @@ export class ProductResolver {
 
         images.map(async img => {
           const uploadedImage = await FileS3.upload(img, {
-            path: 'product',
+            path: 'product/gallery',
             id: product.id,
             variants: this.consts.variants.images,
           });
@@ -106,13 +108,7 @@ export class ProductResolver {
     const { images, ...data } = input;
 
     return productModel
-      .findOneAndUpdate(
-        { _id: input.id },
-        { ...data },
-        {
-          new: true,
-        }
-      )
+      .findOneAndUpdate({ _id: input.id }, { ...data }, { new: true })
       .orFail(() => new ProductNotFound())
       .then(async (product: any) => {
         if (input.categories) {
@@ -129,7 +125,7 @@ export class ProductResolver {
         if (images) {
           images.map(async img => {
             const uploadedImage = await FileS3.upload(img, {
-              path: 'product',
+              path: 'product/gallery',
               id: product.id,
               variants: this.consts.variants.images,
             });
@@ -146,5 +142,25 @@ export class ProductResolver {
   @Mutation(() => Boolean)
   public async removeProduct(@Arg('id', () => ID) id: string) {
     return productModel.findByIdAndRemove(id).then(res => res && true);
+  }
+
+  @Mutation(() => Boolean)
+  public async removeProductGalleryImage(
+    @Arg('input', () => removeProductGalleryImage)
+    input: removeProductGalleryImage
+  ) {
+    const product = await productModel.findOne({
+      _id: input.productId,
+    });
+
+    if (!product) throw new ProductNotFound();
+
+    return FileS3.remove(input.imagePath, this.consts.variants.images).then(
+      async () => {
+        return product
+          .updateOne({ $pull: { images: input.imagePath } })
+          .then((res: any) => res.nModified);
+      }
+    );
   }
 }
