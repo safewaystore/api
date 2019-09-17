@@ -30,7 +30,7 @@ export class CategoryResolver {
     return categoryModel.find({ parent: null });
   }
 
-  @Authorized('admin')
+  // @Authorized('admin')
   @Query(() => Category)
   public async getCategory(@Arg('id', () => String) id: string) {
     return categoryModel.findById(id);
@@ -68,7 +68,7 @@ export class CategoryResolver {
     });
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @YupValidate(createCategorySchema)
   @Mutation(() => Category)
   public async createCategory(
@@ -125,7 +125,7 @@ export class CategoryResolver {
       });
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @Mutation(() => Category)
   @YupValidate(updateCategorySchema)
   public async updateCategory(
@@ -167,7 +167,7 @@ export class CategoryResolver {
     });
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @Mutation(() => Boolean)
   public async removeCategory(@Arg('id', () => String) id: string) {
     const category = await categoryModel.findOne({ _id: id });

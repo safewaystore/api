@@ -7,7 +7,6 @@ import {
   Root,
   Resolver,
   ID,
-  Ctx,
 } from 'type-graphql';
 import { CreateProductInput } from './inputs/createProduct.input';
 import { productModel, Product } from './product.model';
@@ -59,7 +58,7 @@ export class ProductResolver {
     }));
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @YupValidate(createProductSchema)
   @Mutation(() => Product)
   public async createProduct(
@@ -99,7 +98,7 @@ export class ProductResolver {
     });
   }
 
-  // @Authorized('admin')
+  @Authorized('admin')
   @YupValidate(updateProductSchema)
   @Mutation(() => Product)
   public async updateProduct(
@@ -144,6 +143,7 @@ export class ProductResolver {
     return productModel.findByIdAndRemove(id).then(res => res && true);
   }
 
+  @Authorized('admin')
   @Mutation(() => Boolean)
   public async removeProductGalleryImage(
     @Arg('input', () => removeProductGalleryImage)
